@@ -18,20 +18,10 @@
    <div class="container">
        <div class="row">
            <div class="col-lg-12">
-               <div class="row top-nav">
+               <div class="row top-nav" style="background: url(http://www.rbcroyalbank.com/uos/_assets/images/navigation/mainnav/level1-bg.gif) top left repeat-x #002888;">
                    <div class="col-lg-12">
-                       <h3 class="heading left">IBM <span>Watson Developer Cloud</span>: Demo</h3><a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/tradeoff-analytics/" class="right">Documentation</a><a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/apis/#!/tradeoff-analytics" class="right">API Details</a>
-                   </div>
-               </div>
-               <div style="padding-bottom:0px;" class="row header">
-                   <div class="avatar img-container col-lg-1 col-xs-1"><img src="images/app.png">
-                   </div>
-                   <div class="col-lg-6 col-xs-6">
-                       <h2>Tradeoff Analytics NodeJS Starter Application</h2>
-                       <p>The Tradeoff Analytics service helps find the best available options for you. It helps users make better decisions under multiple conflicting goals.</p><a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/tradeoff-analytics.html" class="learn-more">More about this service</a>
-                   </div>
-                   <div class="col-lg-4 col-xs-4 build-your-own">
-                       <h3>Build your own:</h3><a href="https://bluemix.net/deploy?repository=https://github.com/watson-developer-cloud/tradeoff-analytics-java.git" class="left fork">Fork and Deploy on Bluemix</a><a href="https://github.com/watson-developer-cloud/tradeoff-analytics-java" class="right fork">Fork on Github</a>
+                   	   <img src="http://www.rbc.com/uos/_assets/images/logos/web/rbc.gif"/>
+                       <h3 class="heading left">RBC <span>Job Shadow</span></h3><a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/tradeoff-analytics/" class="right">
                    </div>
                </div>
            </div>
