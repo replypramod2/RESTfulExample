@@ -97,18 +97,16 @@
         //    languages.push($(this).val());
         //  });
         return {
-            "name": name,
-            "values": {
-                "summary": summary,
-                "skills": skills,
-                "interests": interests,
-                "education": education,
-                "courses": courses,
-                "experience": experience,
-                "contact": contact,
-                "patience": patience,
-                "passion": passion
-            }
+            "fullname": name,
+            "summary": summary,
+            "skills": skills,
+            "interests": interests,
+            "education": education,
+            "courses": courses,
+            "experience": experience,
+            "contact": contact,
+            "patience": patience,
+            "passion": passion
         }
     }
 
@@ -117,14 +115,15 @@
         var restEndPoint = "/rest/cloudant/attach";
         $("#addBtn").click(function(e) {
             var userJSON = getUser();
-            console.debug("user: " + JSON.stringify(userJSON));
+            userJSON = JSON.stringify(userJSON);
+            console.debug("user: " + userJSON);
             $.ajax({
                 type: "POST",
                 url: restEndPoint,
                 data: userJSON,
                 contentType: "application/json",
                 success: function(data) {
-                  console.log("user saved");
+                    console.log("user saved");
                 },
                 dataType: "json"
             });
