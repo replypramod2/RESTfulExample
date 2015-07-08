@@ -5,7 +5,9 @@ declared-services:
     plan: standard
 applications:
 - services:
-  - tradeoff-analytics-standard-service
-  name: tradeoff-analytics-java
+  - Tradeoff Analytics-q2
+  name: jobshadow-ll
   path: webApp.war
   memory: 512M
+  host: jobshadow-ll
+  domain: mybluemix.net
