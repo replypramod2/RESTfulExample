@@ -46,34 +46,34 @@
       "type" : "text",
       "goal" : "max",
       "full_name" : "Skills",
-      "is_objective" : true
+      "is_objective" : false
     },
     {
       "key" : "interests",
       "type" : "text",
       "goal" : "max",
       "full_name" : "Interests",
-      "is_objective" : true
+      "is_objective" : false
     },
     {
       "key" : "education",
       "type" : "text",
       "goal" : "max",
       "full_name" : "Education",
-      "is_objective" : true
+      "is_objective" : false
     }
     , {
       "key" : "courses",
       "type" : "text",
       "goal" : "max",
       "full_name" : "Courses",
-      "is_objective" : true
+      "is_objective" : false
     },{
       "key" : "experience",
       "type" : "text",
       "goal" : "max",
       "full_name" : "Releted Experience",
-      "is_objective" : true
+      "is_objective" : false
     }, {
       "key" : "contact",
       "type" : "text",
