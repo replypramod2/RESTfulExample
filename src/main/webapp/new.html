@@ -9,7 +9,12 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Signin</title>
+    <title>Create your profile</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/watson-bootstrap-dark.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/style.css">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -18,48 +23,8 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
-    <script>
-    function getUser(){
-        var name= $("#name").val();
-        var certificate = $("#certificate").val();
-        var degree = $("#degree").val();
-        var patience = ($("input[name=patience]:checked").val());
-        var passion = ($("input[name=passion]:checked").val());
-        var languages = [];
-         $("input[name=language]:checked").each(function() {
-           languages.push($(this).val());
-         });
-         return {
-            "name":name,
-            "certificate":certificate,
-            "degree":degree,
-            "patience":patience,
-            "passion":passion,
-            "languages":languages
-         }
-    }
-    $( document ).ready(function(){
-        // replace with the real backend API
-        var restEndPoint = "http://localhost:8080/rest/addUser";
-        $("#addBtn").click(function(e){
-            var userJSON = getUser();
-            console.debug("user: "+JSON.stringify(userJSON));
-            $.ajax({
-              type: "POST",
-              url: restEndPoint,
-              data: {user:userJSON},
-              success: function(){
-
-              },
-              dataType: "json"
-            });
-        });
-    });
-    </script>
     <style type="text/css">
     body {
-        padding-top: 40px;
-        padding-bottom: 40px;
         background-color: #eee;
     }
 
@@ -103,39 +68,183 @@
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+
+    .bootstrap-iso h2,
+    .bootstrap-iso form {
+        font-family: Arial, Helvetica, sans-serif;
+        color: black
+    }
+
+    .bootstrap-iso form button,
+    .bootstrap-iso form button:hover {
+        color: white !important;
+    }
     </style>
+    <script>
+    function getUser() {
+        var name = $("#name").val();
+        var summary = $("#summary").val();
+        var skills = $("#skills").val();
+        var interests = $("#interests").val();
+        var education = $("#education").val();
+        var courses = $("#courses").val();
+        var experience = $("#experience").val();
+        var contact = $("#contact").val();
+        var patience = ($("input[name=patience]:checked").val());
+        var passion = ($("input[name=passion]:checked").val());
+        // var languages = [];
+        //  $("input[name=language]:checked").each(function() {
+        //    languages.push($(this).val());
+        //  });
+        return {
+            "name": name,
+            "values": {
+                "summary": summary,
+                "skills": skills,
+                "interests": interests,
+                "education": education,
+                "courses": courses,
+                "experience": experience,
+                "contact": contact,
+                "patience": patience,
+                "passion": passion
+            }
+        }
+    }
+    $(document).ready(function() {
+        // replace with the real backend API
+        var restEndPoint = "http://jobshadow-dmoe2.mybluemix.net/rest/hello/attach";
+        $("#addBtn").click(function(e) {
+            var userJSON = getUser();
+            console.debug("user: " + JSON.stringify(userJSON));
+            $.ajax({
+                type: "POST",
+                url: restEndPoint,
+                data: userJSON,
+                success: function(data) {
+                  console.log("user saved");
+                },
+                dataType: "json"
+            });
+        });
+    });
+    </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css"></style>
+    <!--JavaScript and CSS -->
+    <!-- <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> -->
+    <!--not needed if already using Bootstrap-->
 </head>
 
 <body>
     <div class="container">
-        <!--JavaScript and CSS -->
-<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> <!--not needed if already using Bootstrap-->
-<style>.bootstrap-iso h2, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;}</style>
-
-<!-- HTML Form (wrapped in an isolated Bootstrap 3 div) -->
-<div class="bootstrap-iso">
- <div class="">
-  <div class="">
-   <div class="col-md-6 col-sm-6 col-xs-12">
-    <form method="post">
-     <div class="form-group" id="div_name">
-      <label class="control-label requiredField" for="name">
-       Name
-       <span class="asteriskField">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row top-nav" style="background:url(http://www.rbcroyalbank.com/uos/_assets/images/navigation/mainnav/level1-bg.gif) top left repeat-x #002888">
+                    <div class="col-lg-12">
+                        <h3 class="heading left">RBC <span>Job Shadowing</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- HTML Form (wrapped in an isolated Bootstrap 3 div) -->
+        <div class="bootstrap-iso" style="padding-top:30px;">
+            <div class="">
+                <div class="">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <form method="post">
+                            <div class="form-group" id="div_name">
+                                <label class="control-label requiredField" for="name">
+                                    Name
+                                    <span class="asteriskField">
         *
        </span>
-      </label>
-      <div class="controls ">
-       <input class="form-control" id="name" name="name" type="text"/>
-      </div>
-     </div>
-     <div class="form-group" id="div_certificate">
+                                </label>
+                                <div class="controls ">
+                                    <input class="form-control" id="name" name="name" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_summary">
+                                <label class="control-label requiredField" for="summary">
+                                    Summary
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="summary" name="summary" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_skills">
+                                <label class="control-label requiredField" for="skills">
+                                    Skills
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="skills" name="skills" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_interests">
+                                <label class="control-label requiredField" for="interests">
+                                    Interests
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="interests" name="interests" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_education">
+                                <label class="control-label requiredField" for="education">
+                                    Education
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="education" name="education" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_courses">
+                                <label class="control-label requiredField" for="courses">
+                                    Courses
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="courses" name="courses" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_experience">
+                                <label class="control-label requiredField" for="courses">
+                                    Experience
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="experience" name="experience" row="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_contact">
+                                <label class="control-label requiredField" for="contact">
+                                    Contact
+                                    <span class="asteriskField">
+        *
+       </span>
+                                </label>
+                                <div class="controls ">
+                                    <textarea class="form-control" id="contact" name="contact" row="5"></textarea>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group" id="div_certificate">
       <label class="control-label requiredField" for="certificate">
        Certificate
        <span class="asteriskField">
@@ -156,53 +265,47 @@
       <div class="controls ">
        <input class="form-control" id="text" name="text" type="text"/>
       </div>
-     </div>
-     <div class="form-group" id="div_patience">
-      <label class="control-label requiredField" for="patience">
-       Patience
-       <span class="asteriskField">
+     </div> -->
+                            <div class="form-group" id="div_patience">
+                                <label class="control-label requiredField" for="patience">
+                                    Patience
+                                    <span class="asteriskField">
         *
        </span>
-      </label>
-      <div class="controls ">
-       <label class="radio-inline">
-        <input id="id_patience_1" name="patience" type="radio" value="High"/>
-        High
-       </label>
-       <label class="radio-inline">
-        <input id="id_patience_2" name="patience" type="radio" value="Medium"/>
-        Medium
-       </label>
-       <label class="radio-inline">
-        <input id="id_patience_3" name="patience" type="radio" value="Low"/>
-        Low
-       </label>
-      </div>
-     </div>
-     <div class="form-group" id="div_passion">
-      <label class="control-label requiredField" for="passion">
-       Passion
-       <span class="asteriskField">
+                                </label>
+                                <div class="controls ">
+                                    <label class="radio-inline">
+                                        <input id="id_patience_1" name="patience" type="radio" value="High" /> High
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input id="id_patience_2" name="patience" type="radio" value="Medium" /> Medium
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input id="id_patience_3" name="patience" type="radio" value="Low" /> Low
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="div_passion">
+                                <label class="control-label requiredField" for="passion">
+                                    Passion
+                                    <span class="asteriskField">
         *
        </span>
-      </label>
-      <div class="controls ">
-       <label class="radio-inline">
-        <input id="id_passion_1" name="passion" type="radio" value="High"/>
-        High
-       </label>
-       <label class="radio-inline">
-        <input id="id_passion_2" name="passion" type="radio" value="Medium"/>
-        Medium
-       </label>
-       <label class="radio-inline">
-        <input id="id_passion_3" name="passion" type="radio" value="Low"/>
-        Low
-       </label>
-      </div>
-     </div>
-     <!-- Multiple Checkboxes -->
-<div class="form-group">
+                                </label>
+                                <div class="controls ">
+                                    <label class="radio-inline">
+                                        <input id="id_passion_1" name="passion" type="radio" value="High" /> High
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input id="id_passion_2" name="passion" type="radio" value="Medium" /> Medium
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input id="id_passion_3" name="passion" type="radio" value="Low" /> Low
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes -->
+                            <!-- <div class="form-group">
   <label class="control-label" for="language">Language</label>
   <div class="">
   <div class="checkbox">
@@ -242,20 +345,20 @@
     </label>
     </div>
   </div>
-</div>
-     <div class="form-group">
-      <div>
-       <input name="_honey" style="display:none" type="text"/>
-       <button class="btn btn-primary " id="addBtn" name="submit" type="button">
-        Submit
-       </button>
-      </div>
-     </div>
-    </form>
-   </div>
-  </div>
- </div>
-</div>
+</div> -->
+                            <div class="form-group">
+                                <div>
+                                    <input name="_honey" style="display:none" type="text" />
+                                    <button class="btn btn-primary " id="addBtn" name="submit" type="button">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

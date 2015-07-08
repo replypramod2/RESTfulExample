@@ -92,6 +92,7 @@
   border: 1px solid #ccc;
   height: 100%;
   width: 100%;
+  font-size:12px;
 }
 #tablePlaceHolder td, #tablePlaceHolder th {
   border:1px solid #D3D3D3;

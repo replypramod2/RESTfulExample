@@ -28,6 +28,77 @@
   var MIN_BAR_SLIDE_PERIOD = 500;
   var currentProblem = null;
 
+  var columns = [{
+      "key" : "fullname",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Full Name",
+      "is_objective" : false
+    },
+    {
+      "key" : "summary",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Summary",
+      "is_objective" : false
+    },{
+      "key" : "skills",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Skills",
+      "is_objective" : true
+    },
+    {
+      "key" : "interests",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Interests",
+      "is_objective" : true
+    },
+    {
+      "key" : "education",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Education",
+      "is_objective" : true
+    }
+    , {
+      "key" : "courses",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Courses",
+      "is_objective" : true
+    },{
+      "key" : "experience",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Releted Experience",
+      "is_objective" : true
+    }, {
+      "key" : "contact",
+      "type" : "text",
+      "goal" : "max",
+      "full_name" : "Contact",
+      "is_objective" : false
+    }, {
+      "key" : "patience",
+      "type" : "categorical",
+      "goal" : "max",
+      "full_name" : "Patience",
+      "is_objective" : true,
+      "range" : ["High", "Medium", "Low"],
+      "preference" : ["High", "Medium", "Low"]
+    }, {
+      "key" : "passion",
+      "type" : "categorical",
+      "goal" : "max",
+      "full_name" : "Passion",
+      "is_objective" : true,
+      "range" : ["High", "Medium", "Low"],
+      "preference" : ["High", "Medium", "Low"]
+    }
+  ];
+
   /**
    * Smooth scroll to any DOM element
    * @param  {String} DOM element
@@ -59,7 +130,7 @@
       throw message;
     }
   }
-  
+
   /**
    * Wrapper around the API
    */
@@ -72,7 +143,7 @@
 
     taClient.subscribe('afterError', errCallback);
     taClient.subscribe('doneClicked', onResultSelection);
-    
+
     var topics = [ 'started', 'problemChanged', 'destroyed', 'doneClicked', 'optionClicked', 'X_finalDecisionChanged',
         'X_favoritesChanged', 'X_selectionChanged', 'X_filterChanged'/*, 'X_optionHovered'*/ ];
     topics.forEach(function(t){
@@ -80,7 +151,7 @@
         console.log(JSON.stringify(e));
       });
     });
-    
+
     taClient.start(callback);
   }
 
@@ -132,6 +203,8 @@
   function loadSelectedProblem() {
     var path = 'problems/' + $('.problems').val();
     $.getJSON(path, function(data) {
+      //predeifned column schema
+      data.body['columns'] = columns;
       $('.problemText').val(JSON.stringify(data, null, 2)).change();
     });
   }
@@ -228,7 +301,7 @@
     onRestore();
     if (event.selectedOptionKeys) {
       $('.decisionArea').show();
-      var selectedOptionKey = event.selectedOptionKeys[0];//currently, maximum one option is selected 
+      var selectedOptionKey = event.selectedOptionKeys[0];//currently, maximum one option is selected
       var firstOptionName = currentProblem.options.filter(function(op){
         return op.key === selectedOptionKey;
       })[0].name;
@@ -287,7 +360,7 @@
     		errorMsg = error.responseText;
     	}
     	else {
-	    	try { 
+	    	try {
 	    		errorMsg = JSON.stringify(error, null, 4);
 	    	}
 	    	catch (e) { // a complex object - can't be converted to json, take it's toString representation
@@ -311,7 +384,7 @@
     window.onkeyup = function(key) {
       if (key.keyCode === 27) onRestore();
     };
-    
+
     resizeToParent();
   }
 
@@ -325,7 +398,7 @@
 			top: 20
 	}, MIN_BAR_SLIDE_PERIOD	);
   }
-  
+
   function hideMinimizeBar() {
     if ($('#minimizeBar').is(':visible')) { // still visible after the timeout
        $('#taWidgetContainer').stop(true);
@@ -338,7 +411,7 @@
 	  }, MIN_BAR_SLIDE_PERIOD);
 	}
   }
-    
+
   function onRestore() {
 	$('#minimizeBar').hide();
 	window.onkeyup = null;
@@ -387,7 +460,7 @@
 	var selectedProfile = showAdvanced ?  $('.profiles').val() : 'basic';
     var selectedTheme =  showAdvanced ?  $('#themes').val() : $("#themes option:first").val();
 	var profile = showAdvanced && selectedProfile === 'custom' ? JSON.parse($('#featuresText').val()) : selectedProfile;
-    
+
     if (selectedTheme !== lastTheme || JSON.stringify(profile) !== JSON.stringify(lastProfile))  {
 	  destroyTradeoffAnalytcsWidget(function() {
 		loadTradeoffAnalytics(profile, selectedTheme, showWidget, onError);
@@ -395,17 +468,17 @@
     } else {
     	showWidget();
     }
-    
+
     lastProfile = profile;
     lastTheme = selectedTheme;
   }
-  
+
   function openAdvanced() {
 	  $('.showAdvance').val('yes');
 	  toggleAdvance();
 	  jumpTo('.advancedArea');
   }
-  
+
   // On page load
   $(document).ready(onPageLoad);
 
@@ -423,9 +496,9 @@
   // Visualization events
   $('#maximize').click(onMaximize);
   $('#minimize').click(onRestore);
-  
-  var timeoutHandle = null; 
-    
+
+  var timeoutHandle = null;
+
   $('#minimizeBar').mouseenter(function() {
 	  if (timeoutHandle) {
 		clearTimeout(timeoutHandle);
@@ -433,7 +506,7 @@
 	  }
 	  showMinimizeBar();
   });
-  
+
   $('#minimizeBar').mouseleave(function() {
 	 if ($('#minimizeBar').is(':visible')) {
 		 timeoutHandle = setTimeout(hideMinimizeBar,500);
