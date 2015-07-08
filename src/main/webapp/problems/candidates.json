@@ -108,16 +108,16 @@
 			"key" : "3",
 			"name" : "Jack",
 			"values" : {
-				"fullname" : "Jack",
-				"summary" : "some summary here",
-				"education" : "Master in Computer Science",
-				"skills" : "Java, C++, GO",
-				"interests" : "Programmer",
-				"courses" : "database design, Improve communication skills",
-				"experience" : "4",
-				"contact" : "jack@rbc.com",
-				"patience" : "High",
-				"passion" : "Medium"
+					"fullname" : "Jack",
+					"summary" : "some summary here",
+					"education" : "Master in Computer Science",
+					"skills" : "Java, C++, GO",
+					"interests" : "Programmer",
+					"courses" : "database design, Improve communication skills",
+					"experience" : "4",
+					"contact" : "jack@rbc.com",
+					"patience" : "High",
+					"passion" : "Medium"
 			},
 	"description_html" : "<img style='max-height: 100px; max-width: 100px;'  src='http://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Samsung_Galaxy_S4.jpg/200px-Samsung_Galaxy_S4.jpg'/><a title='Photo by Karlis Dambrans (Flickr: Samsung Galaxy S4) [CC BY 2.0 (http://creativecommons.org/licenses/by/2.0)], via Wikimedia Commons' href='http://commons.wikimedia.org/wiki/File:Samsung_Galaxy_S4.jpg' target='_blank'> <img style='max-height: 14px; max-width: 14px;'  src='http://mirrors.creativecommons.org/presskit/icons/cc.png'/> </a>"
 		}, {

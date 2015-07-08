@@ -19,5 +19,5 @@ public class HelloWorldService {
 		return Response.status(200).entity(output).build();
  
 	}
- 
+
 }
