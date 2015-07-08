@@ -6,6 +6,9 @@ declared-services:
 applications:
 - services:
   - tradeoff-analytics-standard-service
-  name: tradeoff-analytics-java
+  - Cloudant NoSQL DB-f8
+  name: job-shadowing-20
   path: webApp.war
   memory: 512M
+  host: job-shadowing-20
+  domain: mybluemix.net
