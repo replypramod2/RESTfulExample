@@ -204,7 +204,7 @@
     var path = '/rest/cloudant/list?interests=' + $('.problems').val();
     $.getJSON(path, function(data) {
       //predeifned column schema
-      var results = JSON.parse(data.body);
+      var results = data.body;
       var finalOptions = [];
       /**
       *{
@@ -228,7 +228,7 @@
           var obj = results[i];
           var better = {
             "name":obj.fullname,
-            "values":JSON.stringify(obj)
+            "values":obj
           }
           finalOptions.push(better);
       }
@@ -236,8 +236,8 @@
       finalJson.subject = $('.problems').val();
       finalJson.options = finalOptions;
       finalJson.columns = columns;
-      var jsonObj= JSON.parse(finalJson);
-      $('.problemText').val(JSON.stringify(jsonObj, null, 2)).change();
+      var jsonObj= finalJson;
+      $('.problemText').val(JSON.stringify(jsonObj)).change();
     });
   }
 
