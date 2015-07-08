@@ -111,9 +111,10 @@
             }
         }
     }
+
     $(document).ready(function() {
         // replace with the real backend API
-        var restEndPoint = "http://jobshadow-dmoe2.mybluemix.net/rest/hello/attach";
+        var restEndPoint = "/rest/hello/attach";
         $("#addBtn").click(function(e) {
             var userJSON = getUser();
             console.debug("user: " + JSON.stringify(userJSON));
