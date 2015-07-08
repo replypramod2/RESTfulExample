@@ -201,7 +201,7 @@
   }
 
   function loadSelectedProblem() {
-    var path = 'problems/' + $('.problems').val();
+    var path = '/rest/cloudant/list?interests=' + $('.problems').val();
     $.getJSON(path, function(data) {
       //predeifned column schema
       data.body['columns'] = columns;
