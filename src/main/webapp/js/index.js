@@ -204,8 +204,40 @@
     var path = '/rest/cloudant/list?interests=' + $('.problems').val();
     $.getJSON(path, function(data) {
       //predeifned column schema
-      data.body['columns'] = columns;
-      $('.problemText').val(JSON.stringify(data, null, 2)).change();
+      var results = JSON.parse(data.body);
+      var finalOptions = [];
+      /**
+      *{
+      "key" : " 1",
+      "name" : "Robin",
+      "values" : {
+
+        "fullname" : "Robin",
+        "summary" : "I am an excellent Java Developer/Software Engineer focusing on all tiers of J2EE and web application and never afraid to pick up new technologies.",
+        "education" : "Bachelor in Computer Science",
+        "skills" : "Java, C++, GO",
+        "interests" : "Business Analysis, Programmer",
+        "courses" : "RBC Certified Agile Practitioner",
+        "experience" : "5",
+        "contact" : "robin@rbc.com",
+        "patience" : "High",
+        "passion" : "High"
+      }
+      */
+      for (var i=0; i<results.length; i++){
+          var obj = results[i];
+          var better = {
+            "name":obj.fullname,
+            "values":JSON.stringify(obj)
+          }
+          finalOptions.push(better);
+      }
+      var finalJson = {};
+      finalJson.subject = $('.problems').val();
+      finalJson.options = finalOptions;
+      finalJson.columns = columns;
+      var jsonObj= JSON.parse(finalJson);
+      $('.problemText').val(JSON.stringify(jsonObj, null, 2)).change();
     });
   }
 
