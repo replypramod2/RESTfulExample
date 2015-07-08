@@ -1,0 +1,11 @@
+---
+declared-services:
+  tradeoff-analytics-standard-service:
+    label: job-shadowing-20
+    plan: standard
+applications:
+- services:
+  - tradeoff-analytics-standard-service
+  name: tradeoff-analytics-java
+  path: webApp.war
+  memory: 512M
