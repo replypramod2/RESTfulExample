@@ -114,7 +114,8 @@
 
     $(document).ready(function() {
         // replace with the real backend API
-        var restEndPoint = "/rest/hello/attach";
+        var restEndPoint = "/rest/cloudant/attach";
+
         $("#addBtn").click(function(e) {
             var userJSON = getUser();
             console.debug("user: " + JSON.stringify(userJSON));
