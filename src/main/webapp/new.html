@@ -115,7 +115,6 @@
     $(document).ready(function() {
         // replace with the real backend API
         var restEndPoint = "/rest/cloudant/attach";
-
         $("#addBtn").click(function(e) {
             var userJSON = getUser();
             console.debug("user: " + JSON.stringify(userJSON));
@@ -123,6 +122,7 @@
                 type: "POST",
                 url: restEndPoint,
                 data: userJSON,
+                contentType: "application/json",
                 success: function(data) {
                   console.log("user saved");
                 },
