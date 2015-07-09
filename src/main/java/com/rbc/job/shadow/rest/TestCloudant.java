@@ -37,19 +37,28 @@ public class TestCloudant {
 				{
 					
 					HashMap<String, Object> obj = db.find(HashMap.class, doc.get("id")+"");
+					JsonObject head = new JsonObject();	
+					head.addProperty("name", obj.get("fullname")+"");
 					
-					JsonObject jsonObject = new JsonObject();					
+					JsonObject jsonObject = new JsonObject();
+					jsonObject.addProperty("key", obj.get("_id")+"");
+					jsonObject.addProperty("fullname", obj.get("fullname")+"");
 					jsonObject.addProperty("summary", obj.get("summary")+"");
 					jsonObject.addProperty("education", obj.get("education")+"");
 					jsonObject.addProperty("skills", obj.get("skills")+"");
 					jsonObject.addProperty("interests", obj.get("interests")+"");
 					jsonObject.addProperty("courses", obj.get("courses")+"");
-					jsonObject.addProperty("experience", obj.get("experience")+"");
+					jsonObject.addProperty("positionlevel", obj.get("positionlevel")+"");
+					
+					if(obj.get("experience")!=null)
+					jsonObject.addProperty("experience", Integer.parseInt(obj.get("experience")+""));
+					else
+						jsonObject.addProperty("experience", Integer.parseInt("0"));
 					jsonObject.addProperty("contact", obj.get("contact")+"");
 					jsonObject.addProperty("patience", obj.get("patience")+"");
 					jsonObject.addProperty("passion", obj.get("passion")+"");
-					
-					jsonArray.add(jsonObject);
+					head.add("values", jsonObject);
+					jsonArray.add(head);
 				}
 				System.out.println("jsonArray Size" + jsonArray.size());
 				
