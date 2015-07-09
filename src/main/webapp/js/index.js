@@ -28,70 +28,72 @@
   var MIN_BAR_SLIDE_PERIOD = 500;
   var currentProblem = null;
 
-  var columns = [{
-      "key" : "fullname",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Full Name",
-      "is_objective" : false
-    },
-    {
-      "key" : "summary",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Summary",
-      "is_objective" : false
-    },{
-      "key" : "skills",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Skills",
-      "is_objective" : false
-    },
-    {
-      "key" : "interests",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Interests",
-      "is_objective" : false
-    },
-    {
-      "key" : "education",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Education",
-      "is_objective" : false
-    }
-    , {
-      "key" : "courses",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Courses",
-      "is_objective" : false
-    },{
+  var columns = [
+  //{
+  //     "key" : "fullname",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Full Name",
+  //     "is_objective" : false
+  //   },
+  //   {
+  //     "key" : "summary",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Summary",
+  //     "is_objective" : false
+  //   },{
+  //     "key" : "skills",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Skills",
+  //     "is_objective" : false
+  //   },
+  //   {
+  //     "key" : "interests",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Interests",
+  //     "is_objective" : false
+  //   },
+  //   {
+  //     "key" : "education",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Education",
+  //     "is_objective" : false
+  //   }
+  //   , {
+  //     "key" : "courses",
+  //     "type" : "text",
+  //     "goal" : "max",
+  //     "full_name" : "Courses",
+  //     "is_objective" : false
+  //   },{
+    //   "key" : "contact",
+    //   "type" : "text",
+    //   "goal" : "max",
+    //   "full_name" : "Contact",
+    //   "is_objective" : false
+    // }
+  {
       "key" : "experience",
       "type" : "numeric",
       "goal" : "max",
-      "full_name" : "Releted Experience",
-      "is_objective" : false
+      "full_name" : "Releted Experience (Year)",
+      "is_objective" : true
     },{
       "key" : "availablehours",
       "type" : "numeric",
       "goal" : "max",
       "full_name" : "Available Hours",
-      "is_objective" : false
+      "is_objective" : true
     },{
       "key" : "positionlevel",
       "type" : "numeric",
       "goal" : "min",
-      "full_name" : "Position Level",
-      "is_objective" : false
-    }, {
-      "key" : "contact",
-      "type" : "text",
-      "goal" : "max",
-      "full_name" : "Contact",
-      "is_objective" : false
+      "full_name" : "Position Level (PL)",
+      "is_objective" : true
     }, {
       "key" : "patience",
       "type" : "categorical",
@@ -110,7 +112,7 @@
       "preference" : ["High", "Medium", "Low"]
     }
   ];
-
+  var cColumns = ["key","experience","availablehours","positionlevel","patience","passion"];
   /**
    * Smooth scroll to any DOM element
    * @param  {String} DOM element
@@ -238,6 +240,13 @@
       */
       for (var i=0; i<results.length; i++){
           var obj = results[i];
+          for (var key in p) {
+            if (p.hasOwnProperty(key)) {
+              if(cColumns.indexOf(key)!=-1){
+                  delete obj[key];
+              }
+            }
+          }
           var better = {
             "key":obj.key,
             "name":obj.fullname,
