@@ -21,554 +21,566 @@
  */
 (function() {
 
-  // GLOBAL VARIABLES
-  var taClient = null;
-  var lastTheme = $("#themes option:first").val();
-  var lastProfile = 'basic';
-  var MIN_BAR_SLIDE_PERIOD = 500;
-  var currentProblem = null;
+    // GLOBAL VARIABLES
+    var taClient = null;
+    var lastTheme = $("#themes option:first").val();
+    var lastProfile = 'basic';
+    var MIN_BAR_SLIDE_PERIOD = 500;
+    var currentProblem = null;
 
-  var columns = [
-  //{
-  //     "key" : "fullname",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Full Name",
-  //     "is_objective" : false
-  //   },
-  //   {
-  //     "key" : "summary",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Summary",
-  //     "is_objective" : false
-  //   },{
-  //     "key" : "skills",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Skills",
-  //     "is_objective" : false
-  //   },
-  //   {
-  //     "key" : "interests",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Interests",
-  //     "is_objective" : false
-  //   },
-  //   {
-  //     "key" : "education",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Education",
-  //     "is_objective" : false
-  //   }
-  //   , {
-  //     "key" : "courses",
-  //     "type" : "text",
-  //     "goal" : "max",
-  //     "full_name" : "Courses",
-  //     "is_objective" : false
-  //   },{
-    //   "key" : "contact",
-    //   "type" : "text",
-    //   "goal" : "max",
-    //   "full_name" : "Contact",
-    //   "is_objective" : false
-    // }
-  {
-      "key" : "experience",
-      "type" : "numeric",
-      "goal" : "max",
-      "full_name" : "Releted Experience (Year)",
-      "is_objective" : true
-    },{
-      "key" : "availablehours",
-      "type" : "numeric",
-      "goal" : "max",
-      "full_name" : "Available Hours",
-      "is_objective" : true
-    },{
-      "key" : "positionlevel",
-      "type" : "numeric",
-      "goal" : "min",
-      "full_name" : "Position Level (PL)",
-      "is_objective" : true
-    }, {
-      "key" : "patience",
-      "type" : "categorical",
-      "goal" : "max",
-      "full_name" : "Patience",
-      "is_objective" : true,
-      "range" : ["High", "Medium", "Low"],
-      "preference" : ["High", "Medium", "Low"]
-    }, {
-      "key" : "passion",
-      "type" : "categorical",
-      "goal" : "max",
-      "full_name" : "Passion",
-      "is_objective" : true,
-      "range" : ["High", "Medium", "Low"],
-      "preference" : ["High", "Medium", "Low"]
+    var columns = [
+        //{
+        //     "key" : "fullname",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Full Name",
+        //     "is_objective" : false
+        //   },
+        //   {
+        //     "key" : "summary",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Summary",
+        //     "is_objective" : false
+        //   },{
+        //     "key" : "skills",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Skills",
+        //     "is_objective" : false
+        //   },
+        //   {
+        //     "key" : "interests",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Interests",
+        //     "is_objective" : false
+        //   },
+        //   {
+        //     "key" : "education",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Education",
+        //     "is_objective" : false
+        //   }
+        //   , {
+        //     "key" : "courses",
+        //     "type" : "text",
+        //     "goal" : "max",
+        //     "full_name" : "Courses",
+        //     "is_objective" : false
+        //   },{
+        //   "key" : "contact",
+        //   "type" : "text",
+        //   "goal" : "max",
+        //   "full_name" : "Contact",
+        //   "is_objective" : false
+        // }
+        {
+            "key": "experience",
+            "type": "numeric",
+            "goal": "max",
+            "full_name": "Releted Experience (Year)",
+            "is_objective": true
+        }, {
+            "key": "availablehours",
+            "type": "numeric",
+            "goal": "max",
+            "full_name": "Available Hours",
+            "is_objective": true
+        }, {
+            "key": "positionlevel",
+            "type": "numeric",
+            "goal": "min",
+            "full_name": "Position Level (PL)",
+            "is_objective": true
+        }, {
+            "key": "patience",
+            "type": "categorical",
+            "goal": "max",
+            "full_name": "Patience",
+            "is_objective": true,
+            "range": ["High", "Medium", "Low"],
+            "preference": ["High", "Medium", "Low"]
+        }, {
+            "key": "passion",
+            "type": "categorical",
+            "goal": "max",
+            "full_name": "Passion",
+            "is_objective": true,
+            "range": ["High", "Medium", "Low"],
+            "preference": ["High", "Medium", "Low"]
+        }
+    ];
+    var cColumns = ["key", "experience", "availablehours", "positionlevel", "patience", "passion"];
+    /**
+     * Smooth scroll to any DOM element
+     * @param  {String} DOM element
+     */
+    function jumpTo(h, animate) {
+        if (animate === undefined || animate) {
+            $('html, body').animate({
+                scrollTop: $(h).offset().top
+            }, 500);
+        } else {
+            $(h)[0].scrollIntoView();
+        }
     }
-  ];
-  var cColumns = ["key","experience","availablehours","positionlevel","patience","passion"];
-  /**
-   * Smooth scroll to any DOM element
-   * @param  {String} DOM element
-   */
-  function jumpTo(h,animate) {
-  if (animate === undefined || animate) {
-    $('html, body').animate({
-      scrollTop: $(h).offset().top
-    }, 500);
+
+    function createDom(elem, map, parent) {
+        var e = document.createElement(elem);
+        for (var k in map) {
+            e[k] = map[k];
+        }
+        if (parent) {
+            parent.appendChild(e);
+        }
+        return e;
     }
-    else {
-      $(h)[0].scrollIntoView();
+
+    function assertNotTrue(cond, message) {
+        if (!cond) {
+            throw message;
+        }
     }
-  }
 
-  function createDom(elem, map, parent) {
-    var e = document.createElement(elem);
-    for (var k in map) {
-      e[k] = map[k];
+    /**
+     * Wrapper around the API
+     */
+    function loadTradeoffAnalytics(profile, themeName, callback, errCallback) {
+        taClient = new TA.TradeoffAnalytics({
+            dilemmaServiceUrl: 'demo',
+            customCssUrl: 'https://ta-cdn.mybluemix.net/v1/modmt/styles/' + themeName + '.css',
+            profile: profile
+        }, 'taWidgetContainer');
+
+        taClient.subscribe('afterError', errCallback);
+        taClient.subscribe('doneClicked', onResultSelection);
+
+        var topics = ['started', 'problemChanged', 'destroyed', 'doneClicked', 'optionClicked', 'X_finalDecisionChanged',
+            'X_favoritesChanged', 'X_selectionChanged', 'X_filterChanged' /*, 'X_optionHovered'*/
+        ];
+        topics.forEach(function(t) {
+            taClient.subscribe(t, function(e) {
+                console.log(JSON.stringify(e));
+            });
+        });
+
+        taClient.start(callback);
     }
-    if (parent) {
-      parent.appendChild(e);
+
+    function showTradeoffAnalytcsWidget(problem) {
+        taClient.show(problem, onResultsReady);
+        currentProblem = problem;
     }
-    return e;
-  }
 
-  function assertNotTrue(cond, message) {
-    if (!cond) {
-      throw message;
+    function destroyTradeoffAnalytcsWidget(callback) {
+        taClient.destroy(callback);
     }
-  }
 
-  /**
-   * Wrapper around the API
-   */
-  function loadTradeoffAnalytics(profile, themeName, callback, errCallback) {
-    taClient = new TA.TradeoffAnalytics({
-      dilemmaServiceUrl: 'demo',
-      customCssUrl: 'https://ta-cdn.mybluemix.net/v1/modmt/styles/' + themeName + '.css',
-      profile: profile
-    }, 'taWidgetContainer');
-
-    taClient.subscribe('afterError', errCallback);
-    taClient.subscribe('doneClicked', onResultSelection);
-
-    var topics = [ 'started', 'problemChanged', 'destroyed', 'doneClicked', 'optionClicked', 'X_finalDecisionChanged',
-        'X_favoritesChanged', 'X_selectionChanged', 'X_filterChanged'/*, 'X_optionHovered'*/ ];
-    topics.forEach(function(t){
-      taClient.subscribe(t, function (e){
-        console.log(JSON.stringify(e));
-      });
-    });
-
-    taClient.start(callback);
-  }
-
-  function showTradeoffAnalytcsWidget(problem) {
-    taClient.show(problem, onResultsReady);
-    currentProblem = problem;
-  }
-
-  function destroyTradeoffAnalytcsWidget(callback) {
-    taClient.destroy(callback);
-  }
-
-  /**
-   * Resizes the widget based on the parent DOM element size
-   */
-  function resizeToParent() {
-    taClient.resize();
-  }
-
-  function onPageReady() {
-    $('.analyze').show();
-    $('.loading').hide();
-  }
-
-  function onPageLoad() {
-    loadTradeoffAnalytics('basic', 'watson', onPageReady, onError);
-    loadSelectedProblem();
-    loadProfile('basic');
-    loadTheme('watson');
-  }
-
-  function onProblemChanged() {
-    var tableParent = document.getElementById('tablePlaceHolder');
-    while (tableParent.childElementCount > 0) {
-      tableParent.removeChild(tableParent.childNodes[0]);
+    /**
+     * Resizes the widget based on the parent DOM element size
+     */
+    function resizeToParent() {
+        taClient.resize();
     }
-    try {
-      var problem = JSON.parse($('.problemText').val());
-      assertNotTrue(problem, 'Empty Problem');
-      assertNotTrue($.isArray(problem.columns), 'Invalid problem columns');
-      assertNotTrue($.isArray(problem.options), 'Invalid problem options');
 
-      createOptionsTable(problem, tableParent);
-    } catch (err) {
-      onError({error:'JSON parsing error'});
+    function onPageReady() {
+        $('.analyze').show();
+        $('.loading').hide();
     }
-  }
 
-  function loadSelectedProblem() {
-    var path = '/rest/cloudant/list?interests=' + $('.problems').val();
-    $.getJSON(path, function(data) {
-      //predeifned column schema
-      var results = data.body;
-      var finalOptions = [];
-      /**
-      *{
-      "key" : " 1",
-      "name" : "Robin",
-      "values" : {
-
-        "fullname" : "Robin",
-        "summary" : "I am an excellent Java Developer/Software Engineer focusing on all tiers of J2EE and web application and never afraid to pick up new technologies.",
-        "education" : "Bachelor in Computer Science",
-        "skills" : "Java, C++, GO",
-        "interests" : "Business Analysis, Programmer",
-        "courses" : "RBC Certified Agile Practitioner",
-        "experience" : "5",
-        "contact" : "robin@rbc.com",
-        "patience" : "High",
-        "passion" : "High"
-      }
-      */
-      for (var i=0; i<results.length; i++){
-          var obj = results[i];
-          for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-              if(cColumns.indexOf(key)==-1){
-                  delete obj[key];
-              }
-            }
-          }
-          var better = {
-            "key":obj.key,
-            "name":obj.fullname,
-            "values":obj
-          }
-          delete better.values["key"];
-          finalOptions.push(better);
-      }
-      var finalJson = {};
-      finalJson.subject = $('.problems').val();
-      finalJson.options = finalOptions;
-      finalJson.columns = columns;
-      var jsonObj= finalJson;
-      $('.problemText').val(JSON.stringify(jsonObj)).change();
-    });
-  }
-
-  function createOptionsTable(problem, parent) {
-    var table = createDom('table', {}, parent);
-    var tr = createDom('tr', {}, table);
-    createDom('th', {
-      innerHTML: 'Id'
-    }, tr);
-    createDom('th', {
-      innerHTML: 'Name'
-    }, tr);
-
-    problem.columns.forEach(function(c) {
-      var th = createDom('th', {
-        className: c.is_objective ? c.goal.toUpperCase() === 'MIN' ? 'minimize' : 'maximize' : 'info'
-      }, tr);
-      var iconClassName = c.is_objective ? c.goal.toUpperCase() === 'MIN' ? 'legendIconMin' : 'legendIconMax' : 'legendIconNone';
-      createDom('span', {
-        className: 'legendIcon ' + iconClassName
-      }, th);
-      createDom('span', {
-        innerHTML: c.full_name
-      }, th);
-    });
-    problem.options.forEach(function(op, i) {
-      var tr = createDom('tr', {
-        className: i % 2 ? 'odd' : 'even'
-      }, table);
-      createDom('td', {
-        innerHTML: op.key
-      }, tr);
-      createDom('td', {
-        innerHTML: op.name
-      }, tr);
-      problem.columns.forEach(function(c) {
-        createDom('td', {
-          innerHTML: op.values[c.key] || 0
-        }, tr);
-      });
-    });
-    return table;
-  }
-
-  /**
-   * Hack to hide the .result DOM element, we can't use $().hide()
-   * Because FF doesn't support that if there is an iframe involve
-   */
-  function hideResults() {
-    $('.viz').addClass('result');
-  }
-
-  /**
-   * Show the .result DOM element
-   */
-  function showResults() {
-    $('.viz').removeClass('result');
-  }
-
-  function onAnalyzeClick() {
-    $('.analyze').hide();
-    $('.loading').show();
-    $('.decisionArea').hide();
-
-    $('.errorArea').hide();
-    hideResults();
-
-    var problemJson = getJsonFromElement($('.problemText'));
-    if (!problemJson)
-      return;
-
-    var featuresJson = getJsonFromElement($('.featuresText'));
-    if (!featuresJson)
-      return;
-
-    recreateWidgetIfNeeded(function() {
-      showTradeoffAnalytcsWidget(problemJson);
-    });
-
-  }
-
-  function onResultsReady() {
-    $('.analyze').show();
-    $('.loading').hide();
-
-    showResults();
-    resizeToParent();
-    onPageReady();
-    jumpTo('#taWidgetContainer');
-  }
-
-  function onResultSelection(event) {
-    onRestore();
-    if (event.selectedOptionKeys) {
-      $('.decisionArea').show();
-      var selectedOptionKey = event.selectedOptionKeys[0];//currently, maximum one option is selected
-      var firstOptionName = currentProblem.options.filter(function(op){
-        return op.key === selectedOptionKey;
-      })[0].name;
-      $('.decisionText').text(firstOptionName);
-      jumpTo('.decisionArea');
-    } else {
-      $('.decisionText').text('');
-      $('.decisionArea').hide();
+    function onPageLoad() {
+        loadTradeoffAnalytics('basic', 'watson', onPageReady, onError);
+        loadSelectedProblem();
+        loadProfile('basic');
+        loadTheme('watson');
     }
-  }
 
-  function getJsonFromElement(element) {
-    var elementJson = null;
-    try{
-      elementJson = JSON.parse(element.val());
-    } catch(e) {
-      element.css('border','1px solid red');
-      onError({error: 'JSON is malformed.'});
-      return elementJson;
-    }
-    element.css('border','1px solid grey');
-    $('.errorArea').hide();
-    return elementJson;
-  }
-
-  function toggleTable() {
-    if (!getJsonFromElement($('.problemText')))
-      return;
-
-    var hidden = $('.tableArea').is(':hidden');
-    if (hidden) {
-      $('.tableArea').show();
-      $('.problemArea').hide();
-      $('.viewTable').text('View / Edit JSON');
-    } else {
-      $('.tableArea').hide();
-      $('.problemArea').show();
-      $('.viewTable').text('Back to Table');
-    }
-    $('.problems').focus();
-  }
-
-  function toggleAdvance() {
-    var hide = $('.showAdvance').val() === 'no';
-    if (hide) {
-      $('.advancedArea').hide();
-    } else {
-      $('.advancedArea').show();
-    }
-  }
-
-  function onError(error) {
-    var errorMsg = 'Error processing the request.';
-    if (error) {
-      if (error.responseText) {
-        errorMsg = error.responseText;
-      }
-      else {
+    function onProblemChanged() {
+        var tableParent = document.getElementById('tablePlaceHolder');
+        while (tableParent.childElementCount > 0) {
+            tableParent.removeChild(tableParent.childNodes[0]);
+        }
         try {
-          errorMsg = JSON.stringify(error, null, 4);
+            var problem = JSON.parse($('.problemText').val());
+            assertNotTrue(problem, 'Empty Problem');
+            assertNotTrue($.isArray(problem.columns), 'Invalid problem columns');
+            assertNotTrue($.isArray(problem.options), 'Invalid problem options');
+
+            createOptionsTable(problem, tableParent);
+        } catch (err) {
+            onError({
+                error: 'JSON parsing error'
+            });
         }
-        catch (e) { // a complex object - can't be converted to json, take it's toString representation
-          errorMsg = error.toString();
-        }
-      }
     }
-    $('.errorMsg').text(errorMsg);
-    $('.errorArea').show();
-    onPageReady();
-    jumpTo(".errorArea");
-  }
 
-  window.onerror = onError;
+    function loadSelectedProblem() {
+        var path = '/rest/cloudant/list?interests=' + $('.problems').val();
+        $.getJSON(path, function(data) {
+            //predeifned column schema
+            var results = data.body;
+            var finalOptions = [];
+            /**
+            *{
+            "key" : " 1",
+            "name" : "Robin",
+            "values" : {
 
-  function onMaximize() {
-  $('#minimizeBar').show();
-    $('#taWidgetContainer').addClass('fullsize');
-    $(document.documentElement).addClass('noScroll');
+              "fullname" : "Robin",
+              "summary" : "I am an excellent Java Developer/Software Engineer focusing on all tiers of J2EE and web application and never afraid to pick up new technologies.",
+              "education" : "Bachelor in Computer Science",
+              "skills" : "Java, C++, GO",
+              "interests" : "Business Analysis, Programmer",
+              "courses" : "RBC Certified Agile Practitioner",
+              "experience" : "5",
+              "contact" : "robin@rbc.com",
+              "patience" : "High",
+              "passion" : "High"
+            }
+            */
+            for (var i = 0; i < results.length; i++) {
+                var obj = results[i];
+                // for (var key in obj) {
+                //   if (obj.hasOwnProperty(key)) {
+                //     if(cColumns.indexOf(key)==-1){
+                //         delete obj[key];
+                //     }
+                //   }
+                // }
+                var better = {
+                    "key": obj.key,
+                    "name": obj.fullname,
+                    "values": obj
+                }
+                delete better.values["key"];
+                finalOptions.push(better);
+            }
+            var finalJson = {};
+            finalJson.subject = $('.problems').val();
+            finalJson.options = finalOptions;
+            finalJson.columns = columns;
+            var jsonObj = finalJson;
+            $('.problemText').val(JSON.stringify(jsonObj)).change();
+        });
+    }
 
-    window.onkeyup = function(key) {
-      if (key.keyCode === 27) onRestore();
+    function createOptionsTable(problem, parent) {
+        var table = createDom('table', {}, parent);
+        var tr = createDom('tr', {}, table);
+        createDom('th', {
+            innerHTML: 'Id'
+        }, tr);
+        createDom('th', {
+            innerHTML: 'Name'
+        }, tr);
+
+        problem.columns.forEach(function(c) {
+            var th = createDom('th', {
+                className: c.is_objective ? c.goal.toUpperCase() === 'MIN' ? 'minimize' : 'maximize' : 'info'
+            }, tr);
+            var iconClassName = c.is_objective ? c.goal.toUpperCase() === 'MIN' ? 'legendIconMin' : 'legendIconMax' : 'legendIconNone';
+            createDom('span', {
+                className: 'legendIcon ' + iconClassName
+            }, th);
+            createDom('span', {
+                innerHTML: c.full_name
+            }, th);
+        });
+        problem.options.forEach(function(op, i) {
+            var tr = createDom('tr', {
+                className: i % 2 ? 'odd' : 'even'
+            }, table);
+            createDom('td', {
+                innerHTML: op.key
+            }, tr);
+            createDom('td', {
+                innerHTML: op.name
+            }, tr);
+            problem.columns.forEach(function(c) {
+                createDom('td', {
+                    innerHTML: op.values[c.key] || 0
+                }, tr);
+            });
+        });
+        return table;
+    }
+
+    /**
+     * Hack to hide the .result DOM element, we can't use $().hide()
+     * Because FF doesn't support that if there is an iframe involve
+     */
+    function hideResults() {
+        $('.viz').addClass('result');
+    }
+
+    /**
+     * Show the .result DOM element
+     */
+    function showResults() {
+        $('.viz').removeClass('result');
+    }
+
+    function onAnalyzeClick() {
+        $('.analyze').hide();
+        $('.loading').show();
+        $('.decisionArea').hide();
+
+        $('.errorArea').hide();
+        hideResults();
+
+        var problemJson = getJsonFromElement($('.problemText'));
+        var jsonObj = JSON.parse(problemJson);
+        for (var i = 0; i < jsonObj.finalJson.length; i++) {
+            for (var key in jsonObj.finalJson[i]) {
+                if (results[i].hasOwnProperty(key)) {
+                    if (cColumns.indexOf(key) == -1) {
+                        delete jsonObj.finalJson[i][key];
+                    }
+                }
+            }
+        }
+
+        if (!problemJson)
+            return;
+
+        var featuresJson = getJsonFromElement($('.featuresText'));
+        if (!featuresJson)
+            return;
+
+        recreateWidgetIfNeeded(function() {
+            showTradeoffAnalytcsWidget(JSON.stringify(jsonObj));
+        });
+
     };
 
-    resizeToParent();
-  }
+    function onResultsReady() {
+        $('.analyze').show();
+        $('.loading').hide();
 
-   function showMinimizeBar() {
-  $('#visibleMinimizeBar').stop(true);
-  $('#visibleMinimizeBar').animate({
-    top: 0
-  }, MIN_BAR_SLIDE_PERIOD );
-  $('#taWidgetContainer').stop(true);
-  $('#taWidgetContainer').animate({
-      top: 20
-  }, MIN_BAR_SLIDE_PERIOD );
-  }
-
-  function hideMinimizeBar() {
-    if ($('#minimizeBar').is(':visible')) { // still visible after the timeout
-       $('#taWidgetContainer').stop(true);
-       $('#taWidgetContainer').animate({
-     top: 0
-       }, MIN_BAR_SLIDE_PERIOD);
-       $('#visibleMinimizeBar').stop(true);
-     $('#visibleMinimizeBar').animate({
-       top: -19
-    }, MIN_BAR_SLIDE_PERIOD);
-  }
-  }
-
-  function onRestore() {
-  $('#minimizeBar').hide();
-  window.onkeyup = null;
-  $('#taWidgetContainer').stop(true);
-    $('#taWidgetContainer').css('top','0px');
-  $('#visibleMinimizeBar').stop(true);
-    $('#visibleMinimizeBar').css('top','-19px');
-    $('#taWidgetContainer').removeClass('fullsize');
-    $(document.documentElement).removeClass('noScroll');
-    resizeToParent();
-    jumpTo('#taWidgetContainer',false);
-  }
-
-  function loadProfile(profileName) {
-    $.get('advanced/profiles/' + profileName, function(data) {
-      $('#featuresText').val(data);
-    });
-  }
-
-  function onProfileChanged() {
-    var profileName = $('.profiles').val();
-    if (profileName === 'custom') {
-      profileName = 'basic';
-      $('.featuresText').removeAttr('readonly');
-    } else {
-      $('.featuresText').attr('readonly','readonly');
-    }
-    loadProfile(profileName);
-  }
-
-  function onFeaturesChange() {
-  }
-
-  function onThemeChanged() {
-    loadTheme($('#themes').val());
-  }
-
-  function loadTheme(themeName) {
-    $.get('advanced/themes/' + themeName + '.less', function(data) {
-      $('#themeText').val(data);
-    });
-  }
-
-  function recreateWidgetIfNeeded(showWidget) {
-  var showAdvanced = $('.showAdvance').val() === 'yes';
-  var selectedProfile = showAdvanced ?  $('.profiles').val() : 'basic';
-    var selectedTheme =  showAdvanced ?  $('#themes').val() : $("#themes option:first").val();
-  var profile = showAdvanced && selectedProfile === 'custom' ? JSON.parse($('#featuresText').val()) : selectedProfile;
-
-    if (selectedTheme !== lastTheme || JSON.stringify(profile) !== JSON.stringify(lastProfile))  {
-    destroyTradeoffAnalytcsWidget(function() {
-    loadTradeoffAnalytics(profile, selectedTheme, showWidget, onError);
-    });
-    } else {
-      showWidget();
+        showResults();
+        resizeToParent();
+        onPageReady();
+        jumpTo('#taWidgetContainer');
     }
 
-    lastProfile = profile;
-    lastTheme = selectedTheme;
-  }
-
-  function openAdvanced() {
-    $('.showAdvance').val('yes');
-    toggleAdvance();
-    jumpTo('.advancedArea');
-  }
-
-  // On page load
-  $(document).ready(onPageLoad);
-
-  // Problem events
-  $('.problems').change(loadSelectedProblem);
-  $('.problemText').change(onProblemChanged);
-  $('.viewTable').click(toggleTable);
-  $('#advancedLink').click(openAdvanced);
-
-  // Advance customization events
-  $('.showAdvance').change(toggleAdvance);
-  $('.profiles').change(onProfileChanged);
-  $('.themes').change(onThemeChanged);
-
-  // Visualization events
-  $('#maximize').click(onMaximize);
-  $('#minimize').click(onRestore);
-
-  var timeoutHandle = null;
-
-  $('#minimizeBar').mouseenter(function() {
-    if (timeoutHandle) {
-    clearTimeout(timeoutHandle);
-    timeoutHandle = null;
+    function onResultSelection(event) {
+        onRestore();
+        if (event.selectedOptionKeys) {
+            $('.decisionArea').show();
+            var selectedOptionKey = event.selectedOptionKeys[0]; //currently, maximum one option is selected
+            var firstOptionName = currentProblem.options.filter(function(op) {
+                return op.key === selectedOptionKey;
+            })[0].name;
+            $('.decisionText').text(firstOptionName);
+            jumpTo('.decisionArea');
+        } else {
+            $('.decisionText').text('');
+            $('.decisionArea').hide();
+        }
     }
-    showMinimizeBar();
-  });
 
-  $('#minimizeBar').mouseleave(function() {
-   if ($('#minimizeBar').is(':visible')) {
-     timeoutHandle = setTimeout(hideMinimizeBar,500);
-   }
-  });
+    function getJsonFromElement(element) {
+        var elementJson = null;
+        try {
+            elementJson = JSON.parse(element.val());
+        } catch (e) {
+            element.css('border', '1px solid red');
+            onError({
+                error: 'JSON is malformed.'
+            });
+            return elementJson;
+        }
+        element.css('border', '1px solid grey');
+        $('.errorArea').hide();
+        return elementJson;
+    }
 
-  // Analyze button
-  $('.analyze').click(onAnalyzeClick);
+    function toggleTable() {
+        if (!getJsonFromElement($('.problemText')))
+            return;
+
+        var hidden = $('.tableArea').is(':hidden');
+        if (hidden) {
+            $('.tableArea').show();
+            $('.problemArea').hide();
+            $('.viewTable').text('View / Edit JSON');
+        } else {
+            $('.tableArea').hide();
+            $('.problemArea').show();
+            $('.viewTable').text('Back to Table');
+        }
+        $('.problems').focus();
+    }
+
+    function toggleAdvance() {
+        var hide = $('.showAdvance').val() === 'no';
+        if (hide) {
+            $('.advancedArea').hide();
+        } else {
+            $('.advancedArea').show();
+        }
+    }
+
+    function onError(error) {
+        var errorMsg = 'Error processing the request.';
+        if (error) {
+            if (error.responseText) {
+                errorMsg = error.responseText;
+            } else {
+                try {
+                    errorMsg = JSON.stringify(error, null, 4);
+                } catch (e) { // a complex object - can't be converted to json, take it's toString representation
+                    errorMsg = error.toString();
+                }
+            }
+        }
+        $('.errorMsg').text(errorMsg);
+        $('.errorArea').show();
+        onPageReady();
+        jumpTo(".errorArea");
+    }
+
+    window.onerror = onError;
+
+    function onMaximize() {
+        $('#minimizeBar').show();
+        $('#taWidgetContainer').addClass('fullsize');
+        $(document.documentElement).addClass('noScroll');
+
+        window.onkeyup = function(key) {
+            if (key.keyCode === 27) onRestore();
+        };
+
+        resizeToParent();
+    }
+
+    function showMinimizeBar() {
+        $('#visibleMinimizeBar').stop(true);
+        $('#visibleMinimizeBar').animate({
+            top: 0
+        }, MIN_BAR_SLIDE_PERIOD);
+        $('#taWidgetContainer').stop(true);
+        $('#taWidgetContainer').animate({
+            top: 20
+        }, MIN_BAR_SLIDE_PERIOD);
+    }
+
+    function hideMinimizeBar() {
+        if ($('#minimizeBar').is(':visible')) { // still visible after the timeout
+            $('#taWidgetContainer').stop(true);
+            $('#taWidgetContainer').animate({
+                top: 0
+            }, MIN_BAR_SLIDE_PERIOD);
+            $('#visibleMinimizeBar').stop(true);
+            $('#visibleMinimizeBar').animate({
+                top: -19
+            }, MIN_BAR_SLIDE_PERIOD);
+        }
+    }
+
+    function onRestore() {
+        $('#minimizeBar').hide();
+        window.onkeyup = null;
+        $('#taWidgetContainer').stop(true);
+        $('#taWidgetContainer').css('top', '0px');
+        $('#visibleMinimizeBar').stop(true);
+        $('#visibleMinimizeBar').css('top', '-19px');
+        $('#taWidgetContainer').removeClass('fullsize');
+        $(document.documentElement).removeClass('noScroll');
+        resizeToParent();
+        jumpTo('#taWidgetContainer', false);
+    }
+
+    function loadProfile(profileName) {
+        $.get('advanced/profiles/' + profileName, function(data) {
+            $('#featuresText').val(data);
+        });
+    }
+
+    function onProfileChanged() {
+        var profileName = $('.profiles').val();
+        if (profileName === 'custom') {
+            profileName = 'basic';
+            $('.featuresText').removeAttr('readonly');
+        } else {
+            $('.featuresText').attr('readonly', 'readonly');
+        }
+        loadProfile(profileName);
+    }
+
+    function onFeaturesChange() {}
+
+    function onThemeChanged() {
+        loadTheme($('#themes').val());
+    }
+
+    function loadTheme(themeName) {
+        $.get('advanced/themes/' + themeName + '.less', function(data) {
+            $('#themeText').val(data);
+        });
+    }
+
+    function recreateWidgetIfNeeded(showWidget) {
+        var showAdvanced = $('.showAdvance').val() === 'yes';
+        var selectedProfile = showAdvanced ? $('.profiles').val() : 'basic';
+        var selectedTheme = showAdvanced ? $('#themes').val() : $("#themes option:first").val();
+        var profile = showAdvanced && selectedProfile === 'custom' ? JSON.parse($('#featuresText').val()) : selectedProfile;
+
+        if (selectedTheme !== lastTheme || JSON.stringify(profile) !== JSON.stringify(lastProfile)) {
+            destroyTradeoffAnalytcsWidget(function() {
+                loadTradeoffAnalytics(profile, selectedTheme, showWidget, onError);
+            });
+        } else {
+            showWidget();
+        }
+
+        lastProfile = profile;
+        lastTheme = selectedTheme;
+    }
+
+    function openAdvanced() {
+        $('.showAdvance').val('yes');
+        toggleAdvance();
+        jumpTo('.advancedArea');
+    }
+
+    // On page load
+    $(document).ready(onPageLoad);
+
+    // Problem events
+    $('.problems').change(loadSelectedProblem);
+    $('.problemText').change(onProblemChanged);
+    $('.viewTable').click(toggleTable);
+    $('#advancedLink').click(openAdvanced);
+
+    // Advance customization events
+    $('.showAdvance').change(toggleAdvance);
+    $('.profiles').change(onProfileChanged);
+    $('.themes').change(onThemeChanged);
+
+    // Visualization events
+    $('#maximize').click(onMaximize);
+    $('#minimize').click(onRestore);
+
+    var timeoutHandle = null;
+
+    $('#minimizeBar').mouseenter(function() {
+        if (timeoutHandle) {
+            clearTimeout(timeoutHandle);
+            timeoutHandle = null;
+        }
+        showMinimizeBar();
+    });
+
+    $('#minimizeBar').mouseleave(function() {
+        if ($('#minimizeBar').is(':visible')) {
+            timeoutHandle = setTimeout(hideMinimizeBar, 500);
+        }
+    });
+
+    // Analyze button
+    $('.analyze').click(onAnalyzeClick);
 
 })();
