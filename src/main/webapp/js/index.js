@@ -239,9 +239,11 @@
       for (var i=0; i<results.length; i++){
           var obj = results[i];
           var better = {
+            "key":obj.key;
             "name":obj.fullname,
             "values":obj
           }
+          delete better.values["key"];
           finalOptions.push(better);
       }
       var finalJson = {};
