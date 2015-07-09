@@ -112,7 +112,7 @@
       "preference" : ["High", "Medium", "Low"]
     }
   ];
-  var cColumns = ["key","fullname","experience","availablehours","positionlevel","patience","passion"];
+  var cColumns = ["key","experience","availablehours","positionlevel","patience","passion"];
   /**
    * Smooth scroll to any DOM element
    * @param  {String} DOM element
