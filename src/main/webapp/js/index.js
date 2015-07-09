@@ -70,9 +70,21 @@
       "is_objective" : false
     },{
       "key" : "experience",
-      "type" : "text",
+      "type" : "numeric",
       "goal" : "max",
       "full_name" : "Releted Experience",
+      "is_objective" : false
+    }{
+      "key" : "availablehours",
+      "type" : "numeric",
+      "goal" : "max",
+      "full_name" : "Available Hours",
+      "is_objective" : false
+    }{
+      "key" : "positionlevel",
+      "type" : "numeric",
+      "goal" : "min",
+      "full_name" : "Position Level",
       "is_objective" : false
     }, {
       "key" : "contact",
