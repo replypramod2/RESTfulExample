@@ -240,8 +240,8 @@
       */
       for (var i=0; i<results.length; i++){
           var obj = results[i];
-          for (var key in p) {
-            if (p.hasOwnProperty(key)) {
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
               if(cColumns.indexOf(key)!=-1){
                   delete obj["key"];
               }
