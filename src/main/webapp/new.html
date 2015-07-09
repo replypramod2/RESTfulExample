@@ -80,6 +80,42 @@
         color: white !important;
     }
     </style>
+    <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+        api_key: 77syh3d6sknbk3
+        authorize: true
+        onLoad: onLinkedInLoad
+    </script>
+
+    <script type="text/javascript">
+
+        // Setup an event listener to make an API call once auth is complete
+        function onLinkedInLoad() {
+            IN.Event.on(IN, "auth", getProfileData);
+        }
+
+        // Handle the successful return from the API call
+        function onSuccess(data) {
+            console.log(data);
+            var url = "/people/~:(Certifications,languages,twitter-accounts)?format=json";
+            var methodType="GET";
+            var bodyContent = null;
+            function resultCallback(result,data,p3){
+                console.debug(result);
+            }
+            IN.API.Raw(url).method(methodType).body(bodyContent).result(resultCallback).error(function(err){console.error(err)});
+        }
+
+        // Handle an error response from the API call
+        function onError(error) {
+            console.log(error);
+        }
+
+        // Use the API call wrapper to request the member's basic profile data
+        function getProfileData() {
+            IN.API.Raw("/people/~").result(onSuccess).error(onError);
+        }
+
+    </script>
     <script>
     function getUser() {
         var name = $("#name").val();
@@ -153,6 +189,7 @@
         </div>
         <!-- HTML Form (wrapped in an isolated Bootstrap 3 div) -->
         <div class="bootstrap-iso" style="padding-top:30px;">
+            <script type="in/Login"></script>
             <div class="">
                 <div class="">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

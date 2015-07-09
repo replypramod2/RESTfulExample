@@ -12,45 +12,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Signin</title>
-    <script type="text/javascript" src="http://platform.linkedin.com/in.js">
-        api_key: 77syh3d6sknbk3
-        authorize: true
-        onLoad: onLinkedInLoad
-    </script>
 
     <script type="text/javascript">
-
-        // Setup an event listener to make an API call once auth is complete
-        function onLinkedInLoad() {
-            IN.Event.on(IN, "auth", getProfileData);
-        }
-
-        // Handle the successful return from the API call
-        function onSuccess(data) {
-            console.log(data);
-            var url = "/people/~:(Certifications,languages,twitter-accounts)?format=json";
-            var methodType="GET";
-            var bodyContent = null;
-            function resultCallback(result,data,p3){
-                console.debug(result);
-            }
-            IN.API.Raw(url).method(methodType).body(bodyContent).result(resultCallback).error(function(err){console.error(err)});
-        }
-
-        // Handle an error response from the API call
-        function onError(error) {
-            console.log(error);
-        }
-
-        // Use the API call wrapper to request the member's basic profile data
-        function getProfileData() {
-            IN.API.Raw("/people/~").result(onSuccess).error(onError);
-        }
         $(document).ready(function(){
             $("#loginBtn").click(function(){
                 console.log("login");
             });
-
         });
     </script>
     <!-- Bootstrap core CSS -->
@@ -133,7 +100,7 @@
                 </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="button" id="loginBtn">Sign in</button>
-            <script type="in/Login"></script>
+
         </form>
     </div>
 </body>
