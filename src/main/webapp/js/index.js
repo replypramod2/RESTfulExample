@@ -74,13 +74,13 @@
       "goal" : "max",
       "full_name" : "Releted Experience",
       "is_objective" : false
-    }{
+    },{
       "key" : "availablehours",
       "type" : "numeric",
       "goal" : "max",
       "full_name" : "Available Hours",
       "is_objective" : false
-    }{
+    },{
       "key" : "positionlevel",
       "type" : "numeric",
       "goal" : "min",
