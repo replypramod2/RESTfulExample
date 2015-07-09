@@ -31,7 +31,7 @@ public class RestJobShadowCloudantService {
 	public Response list(@QueryParam("interests") String interests)
 			throws Exception {
 
-		System.out.println("I have been called : ");
+		System.out.println("I have been called : " + interests);
 		Database db = null;
 		try {
 			db = getDB();
@@ -60,9 +60,11 @@ public class RestJobShadowCloudantService {
 							doc.get("id") + "");
 					JsonObject jsonObject = new JsonObject();
 					if (interests.equalsIgnoreCase(obj.get("interests") + "")) {
-
+						jsonObject.addProperty("key", obj.get("_id")+"");
+						
 						jsonObject.addProperty("summary", obj.get("summary")
 								+ "");
+						jsonObject.addProperty("fullname", obj.get("fullname")+"");
 						jsonObject.addProperty("education",
 								obj.get("education") + "");
 						jsonObject
@@ -71,8 +73,23 @@ public class RestJobShadowCloudantService {
 								obj.get("interests") + "");
 						jsonObject.addProperty("courses", obj.get("courses")
 								+ "");
-						jsonObject.addProperty("experience",
-								obj.get("experience") + "");
+						
+						if(obj.get("experience")!=null)
+							jsonObject.addProperty("experience", Integer.parseInt(obj.get("experience")+""));
+							else
+								jsonObject.addProperty("experience", Integer.parseInt("0"));
+						
+						if(obj.get("positionlevel")!=null)
+							jsonObject.addProperty("positionlevel", Integer.parseInt(obj.get("positionlevel")+""));
+							else
+								jsonObject.addProperty("positionlevel", Integer.parseInt("8"));
+						
+						if(obj.get("availablehours")!=null)
+							jsonObject.addProperty("availablehours", Integer.parseInt(obj.get("availablehours")+""));
+							else
+								jsonObject.addProperty("availablehours", Integer.parseInt("5"));
+						
+						
 						jsonObject.addProperty("contact", obj.get("contact")
 								+ "");
 						jsonObject.addProperty("patience", obj.get("patience")
@@ -83,7 +100,7 @@ public class RestJobShadowCloudantService {
 						jsonArray.add(jsonObject);
 					}
 				}
-				System.out.println("jsonArray Size" + jsonArray.size());
+				System.out.println("interests Size" + jsonArray.size());
 
 			} catch (Exception dnfe) {
 				System.out.println("Exception thrown : " + dnfe.getMessage());
