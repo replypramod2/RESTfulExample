@@ -239,7 +239,7 @@
       for (var i=0; i<results.length; i++){
           var obj = results[i];
           var better = {
-            "key":obj.key;
+            "key":obj.key,
             "name":obj.fullname,
             "values":obj
           }
