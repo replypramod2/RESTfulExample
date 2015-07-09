@@ -112,19 +112,19 @@
       "preference" : ["High", "Medium", "Low"]
     }
   ];
-  var cColumns = ["key","experience","availablehours","positionlevel","patience","passion"];
+  var cColumns = ["key","fullname","experience","availablehours","positionlevel","patience","passion"];
   /**
    * Smooth scroll to any DOM element
    * @param  {String} DOM element
    */
   function jumpTo(h,animate) {
-	if (animate === undefined || animate) {
-		$('html, body').animate({
-			scrollTop: $(h).offset().top
-		}, 500);
+  if (animate === undefined || animate) {
+    $('html, body').animate({
+      scrollTop: $(h).offset().top
+    }, 500);
     }
     else {
-    	$(h)[0].scrollIntoView();
+      $(h)[0].scrollIntoView();
     }
   }
 
@@ -240,9 +240,9 @@
       */
       for (var i=0; i<results.length; i++){
           var obj = results[i];
-          for (var key in p) {
-            if (p.hasOwnProperty(key)) {
-              if(cColumns.indexOf(key)!=-1){
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              if(cColumns.indexOf(key)==-1){
                   delete obj[key];
               }
             }
@@ -411,17 +411,17 @@
   function onError(error) {
     var errorMsg = 'Error processing the request.';
     if (error) {
-    	if (error.responseText) {
-    		errorMsg = error.responseText;
-    	}
-    	else {
-	    	try {
-	    		errorMsg = JSON.stringify(error, null, 4);
-	    	}
-	    	catch (e) { // a complex object - can't be converted to json, take it's toString representation
-	    		errorMsg = error.toString();
-	    	}
-	    }
+      if (error.responseText) {
+        errorMsg = error.responseText;
+      }
+      else {
+        try {
+          errorMsg = JSON.stringify(error, null, 4);
+        }
+        catch (e) { // a complex object - can't be converted to json, take it's toString representation
+          errorMsg = error.toString();
+        }
+      }
     }
     $('.errorMsg').text(errorMsg);
     $('.errorArea').show();
@@ -432,7 +432,7 @@
   window.onerror = onError;
 
   function onMaximize() {
-	$('#minimizeBar').show();
+  $('#minimizeBar').show();
     $('#taWidgetContainer').addClass('fullsize');
     $(document.documentElement).addClass('noScroll');
 
@@ -444,35 +444,35 @@
   }
 
    function showMinimizeBar() {
-	$('#visibleMinimizeBar').stop(true);
-	$('#visibleMinimizeBar').animate({
-		top: 0
-	}, MIN_BAR_SLIDE_PERIOD	);
-	$('#taWidgetContainer').stop(true);
-	$('#taWidgetContainer').animate({
-			top: 20
-	}, MIN_BAR_SLIDE_PERIOD	);
+  $('#visibleMinimizeBar').stop(true);
+  $('#visibleMinimizeBar').animate({
+    top: 0
+  }, MIN_BAR_SLIDE_PERIOD );
+  $('#taWidgetContainer').stop(true);
+  $('#taWidgetContainer').animate({
+      top: 20
+  }, MIN_BAR_SLIDE_PERIOD );
   }
 
   function hideMinimizeBar() {
     if ($('#minimizeBar').is(':visible')) { // still visible after the timeout
        $('#taWidgetContainer').stop(true);
        $('#taWidgetContainer').animate({
-		 top: 0
+     top: 0
        }, MIN_BAR_SLIDE_PERIOD);
        $('#visibleMinimizeBar').stop(true);
-	   $('#visibleMinimizeBar').animate({
-	  	 top: -19
-	  }, MIN_BAR_SLIDE_PERIOD);
-	}
+     $('#visibleMinimizeBar').animate({
+       top: -19
+    }, MIN_BAR_SLIDE_PERIOD);
+  }
   }
 
   function onRestore() {
-	$('#minimizeBar').hide();
-	window.onkeyup = null;
-	$('#taWidgetContainer').stop(true);
+  $('#minimizeBar').hide();
+  window.onkeyup = null;
+  $('#taWidgetContainer').stop(true);
     $('#taWidgetContainer').css('top','0px');
-	$('#visibleMinimizeBar').stop(true);
+  $('#visibleMinimizeBar').stop(true);
     $('#visibleMinimizeBar').css('top','-19px');
     $('#taWidgetContainer').removeClass('fullsize');
     $(document.documentElement).removeClass('noScroll');
@@ -511,17 +511,17 @@
   }
 
   function recreateWidgetIfNeeded(showWidget) {
-	var showAdvanced = $('.showAdvance').val() === 'yes';
-	var selectedProfile = showAdvanced ?  $('.profiles').val() : 'basic';
+  var showAdvanced = $('.showAdvance').val() === 'yes';
+  var selectedProfile = showAdvanced ?  $('.profiles').val() : 'basic';
     var selectedTheme =  showAdvanced ?  $('#themes').val() : $("#themes option:first").val();
-	var profile = showAdvanced && selectedProfile === 'custom' ? JSON.parse($('#featuresText').val()) : selectedProfile;
+  var profile = showAdvanced && selectedProfile === 'custom' ? JSON.parse($('#featuresText').val()) : selectedProfile;
 
     if (selectedTheme !== lastTheme || JSON.stringify(profile) !== JSON.stringify(lastProfile))  {
-	  destroyTradeoffAnalytcsWidget(function() {
-		loadTradeoffAnalytics(profile, selectedTheme, showWidget, onError);
-	  });
+    destroyTradeoffAnalytcsWidget(function() {
+    loadTradeoffAnalytics(profile, selectedTheme, showWidget, onError);
+    });
     } else {
-    	showWidget();
+      showWidget();
     }
 
     lastProfile = profile;
@@ -529,9 +529,9 @@
   }
 
   function openAdvanced() {
-	  $('.showAdvance').val('yes');
-	  toggleAdvance();
-	  jumpTo('.advancedArea');
+    $('.showAdvance').val('yes');
+    toggleAdvance();
+    jumpTo('.advancedArea');
   }
 
   // On page load
@@ -555,17 +555,17 @@
   var timeoutHandle = null;
 
   $('#minimizeBar').mouseenter(function() {
-	  if (timeoutHandle) {
-		clearTimeout(timeoutHandle);
-		timeoutHandle = null;
-	  }
-	  showMinimizeBar();
+    if (timeoutHandle) {
+    clearTimeout(timeoutHandle);
+    timeoutHandle = null;
+    }
+    showMinimizeBar();
   });
 
   $('#minimizeBar').mouseleave(function() {
-	 if ($('#minimizeBar').is(':visible')) {
-		 timeoutHandle = setTimeout(hideMinimizeBar,500);
-	 }
+   if ($('#minimizeBar').is(':visible')) {
+     timeoutHandle = setTimeout(hideMinimizeBar,500);
+   }
   });
 
   // Analyze button
