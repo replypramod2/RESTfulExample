@@ -80,7 +80,7 @@
 							<a class="viewTable">View / Edit JSON</a>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row" style="display:none;">
 						<label for="advance" class="col-lg-12 control-label">Advanced
 							customization?</label>
 						<div class="col-lg-12">
@@ -102,7 +102,7 @@
 										or create your own by selecting Custom.</p>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group row" style="display:none">
 								<label for="profiles" class="col-lg-12 control-label">Select
 									a profile:</label>
 								<div class="col-lg-12">
@@ -131,10 +131,12 @@
 								<label for="themes" class="col-lg-12 control-label">Select
 									a theme:</label>
 								<div class="col-lg-12">
-									<select id="themes" class="themes form-control"><option
-											value="watson">Watson (default)</option>
-										<option value="teal">Teal</option>
+									<select id="themes" class="themes form-control">
 										<option value="dark">Dark</option></select>
+										<option value="teal">Teal</option>
+										<option
+											value="watson">Watson (default)</option>
+
 								</div>
 							</div>
 							<div class="form-group row">
@@ -172,7 +174,7 @@
 		</div>
 		<div class="row viz result">
 			<div class="col-lg-12 col-xs-12">
-				<h2>Explore the tool</h2>
+				<h2>Analyze Candidate</h2>
 				<div class="row">
 					<div class="col-lg-12 col-xs-12 text-right" style="padding-right: 0px;">
 						<img id="maximize" src="images/maximize.png" class="resizeIcon"/>
